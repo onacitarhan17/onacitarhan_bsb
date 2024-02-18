@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BSB</title>
+</head>
+<body>
+    <form method="POST" action="/login">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="surname">Surname:</label><br>
+        <input type="text" id="surname" name="surname"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="pwd">Password:</label><br>
+        <input type="password" id="pwd" name="password"><br>
+        <input type="radio" id="bsb" name="loginType" value="BSB-Login">
+        <label for="bsb">BSB-Login</label><br>
+        <input type="radio" id="lmu" name="loginType" value="LMU Login">
+        <label for="lmu">LMU Login</label><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
