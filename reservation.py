@@ -7,34 +7,39 @@ from selenium.webdriver.common.by import By
 
 link = "https://www.bsb-muenchen.de/recherche-und-service/besuche-vor-ort/lesesaelearbeitsplaetze/allgemeiner-lesesaal/arbeitsplatz-im-allgemeinen-lesesaal-buchen/"\
 
-def main(name, surname, email, username, password, lmu_login):
-    global afternoon, morning
-    # Open the browser and go to the link
-    browser = webdriver.Chrome()
-    browser.get(link)
+def main(name, surname, email, username, password, lmu_login, morning, afternoon):
+    try:
+        # Open the browser and go to the link
+        browser = webdriver.Chrome()
+        browser.get(link)
 
-    # Wait for the page to load
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "tab2")))
+        # Wait for the page to load
+        WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, "tab2")))
 
-    # login
-    login(username, password, browser, lmu_login)
+        # login
+        login(username, password, browser, lmu_login)
 
-    time.sleep(3)
-    while morning:
-        today = browser.find_element(By.CLASS_NAME, "event-calendar__day-today")
-        morning = morning_reserv(today, browser)
-        if morning:
-            browser.refresh()
-    # Turn back to calendar page
-    browser.get(link)
-    while afternoon:
-        today = browser.find_element(By.CLASS_NAME, "event-calendar__day-today")
-        afternoon = afternoon_reserv(today, browser)
-        if afternoon:
-            browser.refresh()
-    time.sleep(3)
+        time.sleep(3)
+        while morning:
+            today = browser.find_element(By.CLASS_NAME, "event-calendar__day-today")
+            morning = morning_reserv(today, browser, name, surname, email)
+            if morning:
+                browser.refresh()
+        # Turn back to calendar page
+        browser.get(link)
+        while afternoon:
+            today = browser.find_element(By.CLASS_NAME, "event-calendar__day-today")
+            afternoon = afternoon_reserv(today, browser, name, surname, email)
+            if afternoon:
+                browser.refresh()
+        time.sleep(3)
+        return 'Success: Reservation was successful. You will receive a confirmation email.'
+    except:
+        return 'Error: Something went wrong. Please try again.'
+    finally:
+        browser.quit()
 
-def afternoon_reserv(today, browser):
+def afternoon_reserv(today, browser, name, surname, email):
     try:
         afternoon = today.find_element(By.CLASS_NAME, "cat-36")
         afternoon_button = afternoon.find_element(By.CLASS_NAME, "js-register-button")
@@ -47,7 +52,7 @@ def afternoon_reserv(today, browser):
     except:
         return True
     
-def morning_reserv(today, browser):
+def morning_reserv(today, browser, name, surname, email):
     try:
         morning = today.find_element(By.CLASS_NAME, "cat-35")
         morning_button = morning.find_element(By.CLASS_NAME, "js-register-button")
